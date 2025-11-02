@@ -48,7 +48,7 @@ def get_pdf_text(pdf_paths: Union[List[str], List]) -> str:
             if file_text.strip():
                 text += file_text
                 files_processed += 1
-                print(f"Successfully extracted text from {pdf_path}: {len(file_text)} characters")
+                # print(f"Successfully extracted text from {pdf_path}: {len(file_text)} characters")
             else:
                 print(f"Warning: No text extracted from {pdf_path}")
                 
@@ -56,8 +56,8 @@ def get_pdf_text(pdf_paths: Union[List[str], List]) -> str:
             print(f"Error reading PDF {pdf_path}: {str(e)}")
             continue
     
-    print(f"Total files processed: {files_processed}/{len(pdf_paths)}")
-    print(f"Total text length: {len(text)} characters")
+    # print(f"Total files processed: {files_processed}/{len(pdf_paths)}")
+    # print(f"Total text length: {len(text)} characters")
     
     return text
 
@@ -83,7 +83,7 @@ def get_text_chunks(text: str) -> List[str]:
         separators=["\n\n", "\n", ". ", " ", ""]
     )
     chunks = text_splitter.split_text(text)
-    print(f"Created {len(chunks)} chunks from text")
+    # print(f"Created {len(chunks)} chunks from text")
     return chunks
 
 
@@ -100,14 +100,14 @@ def get_vector_store(text_chunks: List[str]):
     if not text_chunks:
         raise ValueError("No text chunks provided to create vector store")
     
-    print(f"Creating vector store with {len(text_chunks)} chunks")
+    # print(f"Creating vector store with {len(text_chunks)} chunks")
     
     # Use free local embeddings
     embeddings = HuggingFaceEmbeddings(
         model_name="sentence-transformers/all-MiniLM-L6-v2"
     )
     vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
-    print("Vector store created successfully")
+    # print("Vector store created successfully")
     return vector_store
 
 
