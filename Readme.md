@@ -1,45 +1,51 @@
 # Information Retrieval System
 
-## Introduction
+## Overview
 
-The **Information Retrieval System** is a Python-based application that enables users to upload documents (PDF or DOCX format) and then ask questions related to the content of those documents. The system uses natural language processing and embeddings to understand the document, process user queries, and return accurate and contextually relevant answers.
-
-It integrates Google APIs to enhance functionality such as language models or embeddings.
+The **Information Retrieval System** is a **Streamlit-based AI app** built with **Python** that enables users to upload documents (`PDF` or `DOCX`) and ask natural language questions about their content.  
+It uses **LangChain**, **FAISS**, and **Google Gemini API** to process, embed, and retrieve the most relevant answers based on semantic similarity.
 
 ---
 
-## Features
+## Key Features
 
-- Upload documents in **PDF** or **DOCX** format.
-- Ask questions related to the uploaded file.
-- Intelligent answer generation using document embeddings.
-- Uses Google API for enhanced NLP capabilities.
-- Preprocessing pipeline to clean and chunk documents for retrieval.
+- Upload and process **PDF** or **DOCX** files
+- Ask **natural language questions** related to the uploaded document
+- Intelligent **chunking and embedding** for better context retrieval
+- **Gemini API** integration for accurate and human-like responses
+- **LangChain + FAISS** pipeline for efficient semantic search
+- Simple, interactive **Streamlit UI**
 
 ---
 
 ## Tech Stack
 
-- **Python**
-- **Google Generative AI (PaLM / Gemini) API**
-- **Streamlit** (for web interface)
-- **PyMuPDF** (`fitz`) for PDF parsing
-- **python-docx** for DOCX parsing
-- **Google Generative AI SDK** (`google.generativeai`)
+| Category                 | Technologies                                  |
+| ------------------------ | --------------------------------------------- |
+| Language                 | Python                                        |
+| Framework                | Streamlit                                     |
+| AI / NLP                 | Google Gemini API (via `google-generativeai`) |
+| Embedding / Vector Store | LangChain + FAISS                             |
+| Parsing                  | PyMuPDF (`fitz`), `python-docx`               |
+| Environment              | `.env` (dotenv)                               |
 
 ---
 
 ## Requirements
 
-- pip install streamlit
-- pip install faiss-cpu
-- pip install google-generativeai
-- pip install PyPDF2
-- pip install langchain-google-communit
-- pip install python-dotenv
-- pip install langchain
+```bash
+pip install streamlit
+pip install faiss-cpu
+pip install google-generativeai
+pip install PyMuPDF
+pip install python-docx
+pip install langchain
+pip install python-dotenv
+```
 
-## Installation
+---
+
+## Installation & Setup
 
 ### 1. Clone the Repository
 
@@ -52,40 +58,59 @@ cd information-retrieval-system
 
 ```bash
 python -m venv venv
-source venv/bin/activate    # On Windows: venv\Scripts\activate
+# Activate
+source venv/bin/activate     # For Mac/Linux
+venv\Scripts\activate        # For Windows
+
 ```
 
-### 3. Install Requirements
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Set Up Google API Key
+### 4. Add Google API Key
 
-Create a `.env` file in the root directory and add your API key:
+Create a .env file in the project root and add your key:
 
-```env
+```bash
 GOOGLE_API_KEY=your_google_api_key_here
 ```
 
-> You must enable access to the Google Generative AI (PaLM/Gemini) API and generate an API key from [Google AI Studio](https://makersuite.google.com/).
+You can get your API key from [Google AI Studio](https://aistudio.google.com/)
 
----
+## How It Works
+
+<details>
+<summary>Siquence diagram</summary>
+<img src="./img/work-flow.png" alt="workflow diagram" width="100%" height="auto" />
+</details>
 
 ## Usage
-
-Start the Streamlit app:
 
 ```bash
 streamlit run app.py
 ```
 
-### How it Works
+### Interaction Steps
 
-1. **Upload File**: Upload a `.pdf` or `.docx` document.
-2. **Processing**: The document is chunked and converted into embeddings.
-3. **Ask Questions**: Enter any question related to the uploaded content.
-4. **Get Answers**: The system retrieves and displays the most relevant answer.
+1. **Upload File** → Choose a .pdf or .docx document
 
----
+2. **Processing** → The system cleans, chunks, and embeds the document
+
+3. **Ask Question** → Type a question related to the document
+
+4. **Retrieve Answer**→ The app fetches the most contextually relevant response
+
+## Example
+
+### Uploaded Document: AI Research Report.pdf
+
+#### User Query:
+
+What is the main objective of this research?
+
+#### System Response:
+
+The paper aims to enhance document-level understanding by integrating transformer-based models with retrieval-augmented learning for improved contextual accuracy.
