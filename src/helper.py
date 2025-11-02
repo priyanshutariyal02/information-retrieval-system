@@ -5,7 +5,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.vectorstores import FAISS
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
-
+from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from dotenv import load_dotenv
 
@@ -40,8 +40,47 @@ def get_vector_store(text_chunks):
 
 
 
+# def get_conversational_chain(vector_store):
+#     llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+#     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+#     conversation_chain = ConversationalRetrievalChain.from_llm(
+#         llm=llm,
+#         retriever=vector_store.as_retriever(),
+#         memory=memory
+#     )
+#     return conversation_chain
+
+
 def get_conversational_chain(vector_store):
-    llm=ChatGoogleGenerativeAI()
-    memory = ConversationBufferMemory(memory_key = "chat_history", return_messages=True)
-    conversation_chain = ConversationalRetrievalChain.from_llm(llm=llm, retriever=vector_store.as_retriever(), memory=memory)
+    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")  # stable and fast
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+
+    # Custom QA prompt
+    prompt_template = """
+    You are a helpful assistant. Use ONLY the context from the retrieved documents to answer the user's question.
+    If you don't know the answer based on the provided context, say "I could not find that in the document."
+    
+    Context:
+    {context}
+    
+    Chat History:
+    {chat_history}
+    
+    Question:
+    {question}
+    
+    Helpful Answer:
+    """
+
+    PROMPT = PromptTemplate(
+        template=prompt_template,
+        input_variables=["context", "question", "chat_history"]
+    )
+
+    conversation_chain = ConversationalRetrievalChain.from_llm(
+        llm=llm,
+        retriever=vector_store.as_retriever(search_kwargs={"k": 3}),
+        memory=memory,
+        combine_docs_chain_kwargs={"prompt": PROMPT}
+    )
     return conversation_chain

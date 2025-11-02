@@ -9,7 +9,7 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 os.environ['GOOGLE_API_KEY'] = GOOGLE_API_KEY
 
 def user_input(user_question):
-    response = st.session_state.conversation({'question': user_question})
+    response = st.session_state.conversation.invoke({'question': user_question})
     st.session_state.chatHistory = response['chat_history']
     for i, message in enumerate(st.session_state.chatHistory):
         if i % 2 == 0:
