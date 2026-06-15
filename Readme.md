@@ -10,8 +10,6 @@
 
 Upload PDFs • Ask Questions • Get Instant Answers
 
-[Live Demo](#)
-
 </div>
 
 ---
